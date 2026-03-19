@@ -1,529 +1,758 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Computism – Internet Computer Development</title>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Computism – Internet Computer Development</title>
+        <style>
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
 
-    :root {
-      --ic-purple: #3b00b9;
-      --ic-blue: #29abe2;
-      --ic-light: #f4f6ff;
-      --ic-dark: #0a0a1a;
-      --ic-mid: #1a1a3e;
-      --text: #1a1a2e;
-      --muted: #555577;
-      --white: #ffffff;
-    }
+            :root {
+                --ic-purple: #3b00b9;
+                --ic-blue: #29abe2;
+                --ic-light: #f4f6ff;
+                --ic-dark: #0a0a1a;
+                --ic-mid: #1a1a3e;
+                --text: #1a1a2e;
+                --muted: #555577;
+                --white: #ffffff;
+            }
 
-    html { scroll-behavior: smooth; }
+            html {
+                scroll-behavior: smooth;
+            }
 
-    body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      color: var(--text);
-      background: var(--white);
-      line-height: 1.6;
-    }
+            body {
+                font-family:
+                    "Segoe UI",
+                    system-ui,
+                    -apple-system,
+                    sans-serif;
+                color: var(--text);
+                background: var(--white);
+                line-height: 1.6;
+            }
 
-    /* ── NAV ── */
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: var(--ic-dark);
-      padding: 0 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 64px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.4);
-    }
+            /* ── NAV ── */
+            nav {
+                position: sticky;
+                top: 0;
+                z-index: 100;
+                background: var(--ic-dark);
+                padding: 0 2rem;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                height: 64px;
+                box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+            }
 
-    .nav-logo {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: var(--white);
-      letter-spacing: 0.04em;
-    }
+            .nav-logo {
+                font-size: 1.4rem;
+                font-weight: 700;
+                color: var(--white);
+                letter-spacing: 0.04em;
+            }
 
-    .nav-logo span { color: var(--ic-blue); }
+            .nav-logo span {
+                color: var(--ic-blue);
+            }
 
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 2rem;
-    }
+            nav ul {
+                list-style: none;
+                display: flex;
+                gap: 2rem;
+            }
 
-    nav ul a {
-      color: rgba(255,255,255,0.75);
-      text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 500;
-      transition: color 0.2s;
-    }
+            nav ul a {
+                color: rgba(255, 255, 255, 0.75);
+                text-decoration: none;
+                font-size: 0.9rem;
+                font-weight: 500;
+                transition: color 0.2s;
+            }
 
-    nav ul a:hover { color: var(--ic-blue); }
+            nav ul a:hover {
+                color: var(--ic-blue);
+            }
 
-    /* ── HERO ── */
-    .hero {
-      background: linear-gradient(135deg, var(--ic-dark) 0%, var(--ic-mid) 60%, #0d0d3a 100%);
-      color: var(--white);
-      padding: 7rem 2rem 5rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
+            /* ── HERO ── */
+            .hero {
+                background: linear-gradient(
+                    135deg,
+                    var(--ic-dark) 0%,
+                    var(--ic-mid) 60%,
+                    #0d0d3a 100%
+                );
+                color: var(--white);
+                padding: 7rem 2rem 5rem;
+                text-align: center;
+                position: relative;
+                overflow: hidden;
+            }
 
-    .hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(41,171,226,0.15) 0%, transparent 70%),
-        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(59,0,185,0.2) 0%, transparent 60%);
-      pointer-events: none;
-    }
+            .hero::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background:
+                    radial-gradient(
+                        ellipse 80% 60% at 50% 0%,
+                        rgba(41, 171, 226, 0.15) 0%,
+                        transparent 70%
+                    ),
+                    radial-gradient(
+                        ellipse 60% 40% at 80% 80%,
+                        rgba(59, 0, 185, 0.2) 0%,
+                        transparent 60%
+                    );
+                pointer-events: none;
+            }
 
-    .hero-badge {
-      display: inline-block;
-      background: rgba(41,171,226,0.15);
-      border: 1px solid rgba(41,171,226,0.4);
-      color: var(--ic-blue);
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.35rem 1rem;
-      border-radius: 100px;
-      margin-bottom: 1.5rem;
-    }
+            .hero-badge {
+                display: inline-block;
+                background: rgba(41, 171, 226, 0.15);
+                border: 1px solid rgba(41, 171, 226, 0.4);
+                color: var(--ic-blue);
+                font-size: 0.78rem;
+                font-weight: 600;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                padding: 0.35rem 1rem;
+                border-radius: 100px;
+                margin-bottom: 1.5rem;
+            }
 
-    .hero h1 {
-      font-size: clamp(2.2rem, 5vw, 3.8rem);
-      font-weight: 800;
-      line-height: 1.15;
-      margin-bottom: 1.25rem;
-      letter-spacing: -0.02em;
-    }
+            .hero h1 {
+                font-size: clamp(2.2rem, 5vw, 3.8rem);
+                font-weight: 800;
+                line-height: 1.15;
+                margin-bottom: 1.25rem;
+                letter-spacing: -0.02em;
+            }
 
-    .hero h1 span { color: var(--ic-blue); }
+            .hero h1 span {
+                color: var(--ic-blue);
+            }
 
-    .hero p {
-      font-size: 1.15rem;
-      color: rgba(255,255,255,0.72);
-      max-width: 620px;
-      margin: 0 auto 2.5rem;
-    }
+            .hero p {
+                font-size: 1.15rem;
+                color: rgba(255, 255, 255, 0.72);
+                max-width: 620px;
+                margin: 0 auto 2.5rem;
+            }
 
-    .hero-cta {
-      display: inline-block;
-      background: var(--ic-blue);
-      color: var(--white);
-      text-decoration: none;
-      padding: 0.85rem 2.2rem;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 1rem;
-      transition: background 0.2s, transform 0.15s;
-    }
+            .hero-cta {
+                display: inline-block;
+                background: var(--ic-blue);
+                color: var(--white);
+                text-decoration: none;
+                padding: 0.85rem 2.2rem;
+                border-radius: 8px;
+                font-weight: 600;
+                font-size: 1rem;
+                transition:
+                    background 0.2s,
+                    transform 0.15s;
+            }
 
-    .hero-cta:hover { background: #1d8fc2; transform: translateY(-2px); }
+            .hero-cta:hover {
+                background: #1d8fc2;
+                transform: translateY(-2px);
+            }
 
-    /* ── SECTIONS ── */
-    section { padding: 5rem 2rem; }
+            /* ── SECTIONS ── */
+            section {
+                padding: 5rem 2rem;
+            }
 
-    .container { max-width: 1080px; margin: 0 auto; }
+            .container {
+                max-width: 1080px;
+                margin: 0 auto;
+            }
 
-    .section-label {
-      display: inline-block;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--ic-purple);
-      margin-bottom: 0.75rem;
-    }
+            .section-label {
+                display: inline-block;
+                font-size: 0.75rem;
+                font-weight: 700;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                color: var(--ic-purple);
+                margin-bottom: 0.75rem;
+            }
 
-    h2 {
-      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
-      font-weight: 800;
-      line-height: 1.2;
-      letter-spacing: -0.02em;
-      margin-bottom: 1.2rem;
-    }
+            h2 {
+                font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+                font-weight: 800;
+                line-height: 1.2;
+                letter-spacing: -0.02em;
+                margin-bottom: 1.2rem;
+            }
 
-    .lead {
-      font-size: 1.1rem;
-      color: var(--muted);
-      max-width: 680px;
-      margin-bottom: 3.5rem;
-    }
+            .lead {
+                font-size: 1.1rem;
+                color: var(--muted);
+                max-width: 680px;
+                margin-bottom: 3.5rem;
+            }
 
-    /* ── ABOUT ── */
-    #about { background: var(--ic-light); }
+            /* ── ABOUT ── */
+            #about {
+                background: var(--ic-light);
+            }
 
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      align-items: center;
-    }
+            .about-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 3rem;
+                align-items: center;
+            }
 
-    .about-text p + p { margin-top: 1rem; }
+            .about-text p + p {
+                margin-top: 1rem;
+            }
 
-    .about-text p { color: var(--muted); }
+            .about-text p {
+                color: var(--muted);
+            }
 
-    .about-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-    }
+            .about-stats {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1.5rem;
+            }
 
-    .stat-card {
-      background: var(--white);
-      border: 1px solid #e0e4f0;
-      border-radius: 12px;
-      padding: 1.5rem;
-      text-align: center;
-    }
+            .stat-card {
+                background: var(--white);
+                border: 1px solid #e0e4f0;
+                border-radius: 12px;
+                padding: 1.5rem;
+                text-align: center;
+            }
 
-    .stat-card .number {
-      font-size: 2.2rem;
-      font-weight: 800;
-      color: var(--ic-purple);
-      line-height: 1;
-    }
+            .stat-card .number {
+                font-size: 2.2rem;
+                font-weight: 800;
+                color: var(--ic-purple);
+                line-height: 1;
+            }
 
-    .stat-card .label {
-      font-size: 0.85rem;
-      color: var(--muted);
-      margin-top: 0.4rem;
-    }
+            .stat-card .label {
+                font-size: 0.85rem;
+                color: var(--muted);
+                margin-top: 0.4rem;
+            }
 
-    /* ── SERVICES ── */
-    #services { background: var(--white); }
+            /* ── SERVICES ── */
+            #services {
+                background: var(--white);
+            }
 
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.75rem;
-    }
+            .services-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 1.75rem;
+            }
 
-    .service-card {
-      border: 1px solid #e0e4f0;
-      border-radius: 14px;
-      padding: 2rem;
-      transition: box-shadow 0.2s, transform 0.2s;
-    }
+            .service-card {
+                border: 1px solid #e0e4f0;
+                border-radius: 14px;
+                padding: 2rem;
+                transition:
+                    box-shadow 0.2s,
+                    transform 0.2s;
+            }
 
-    .service-card:hover {
-      box-shadow: 0 8px 32px rgba(59,0,185,0.1);
-      transform: translateY(-4px);
-    }
+            .service-card:hover {
+                box-shadow: 0 8px 32px rgba(59, 0, 185, 0.1);
+                transform: translateY(-4px);
+            }
 
-    .service-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--ic-purple), var(--ic-blue));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 1.25rem;
-      font-size: 1.4rem;
-    }
+            .service-icon {
+                width: 48px;
+                height: 48px;
+                border-radius: 12px;
+                background: linear-gradient(
+                    135deg,
+                    var(--ic-purple),
+                    var(--ic-blue)
+                );
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 1.25rem;
+                font-size: 1.4rem;
+            }
 
-    .service-card h3 {
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 0.6rem;
-    }
+            .service-card h3 {
+                font-size: 1.1rem;
+                font-weight: 700;
+                margin-bottom: 0.6rem;
+            }
 
-    .service-card p { font-size: 0.93rem; color: var(--muted); }
+            .service-card p {
+                font-size: 0.93rem;
+                color: var(--muted);
+            }
 
-    /* ── TEAM ── */
-    #team { background: var(--ic-light); }
+            /* ── TEAM ── */
+            #team {
+                background: var(--ic-light);
+            }
 
-    .team-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-    }
+            .team-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 2rem;
+            }
 
-    .team-card {
-      background: var(--white);
-      border: 1px solid #e0e4f0;
-      border-radius: 16px;
-      overflow: hidden;
-      transition: box-shadow 0.2s, transform 0.2s;
-    }
+            .team-card {
+                background: var(--white);
+                border: 1px solid #e0e4f0;
+                border-radius: 16px;
+                overflow: hidden;
+                transition:
+                    box-shadow 0.2s,
+                    transform 0.2s;
+            }
 
-    .team-card:hover {
-      box-shadow: 0 10px 40px rgba(59,0,185,0.1);
-      transform: translateY(-4px);
-    }
+            .team-card:hover {
+                box-shadow: 0 10px 40px rgba(59, 0, 185, 0.1);
+                transform: translateY(-4px);
+            }
 
-    .team-card img {
-      width: 100%;
-      height: 260px;
-      object-fit: cover;
-      object-position: center top;
-      display: block;
-    }
+            .team-card img {
+                width: 100%;
+                height: 260px;
+                object-fit: cover;
+                object-position: center;
+                display: block;
+            }
 
-    .team-info { padding: 1.5rem; }
+            .team-info {
+                padding: 1.5rem;
+            }
 
-    .team-info h3 {
-      font-size: 1.15rem;
-      font-weight: 700;
-      margin-bottom: 0.2rem;
-    }
+            .team-info h3 {
+                font-size: 1.15rem;
+                font-weight: 700;
+                margin-bottom: 0.2rem;
+            }
 
-    .team-role {
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--ic-purple);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-bottom: 0.9rem;
-    }
+            .team-role {
+                font-size: 0.82rem;
+                font-weight: 600;
+                color: var(--ic-purple);
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                margin-bottom: 0.9rem;
+            }
 
-    .team-info p { font-size: 0.9rem; color: var(--muted); }
+            .team-info p {
+                font-size: 0.9rem;
+                color: var(--muted);
+            }
 
-    /* ── IC BADGE STRIP ── */
-    .ic-strip {
-      background: linear-gradient(90deg, var(--ic-dark), var(--ic-mid));
-      color: var(--white);
-      padding: 3.5rem 2rem;
-      text-align: center;
-    }
+            /* ── IC BADGE STRIP ── */
+            .ic-strip {
+                background: linear-gradient(
+                    90deg,
+                    var(--ic-dark),
+                    var(--ic-mid)
+                );
+                color: var(--white);
+                padding: 3.5rem 2rem;
+                text-align: center;
+            }
 
-    .ic-strip h2 { color: var(--white); margin-bottom: 1rem; }
+            .ic-strip h2 {
+                color: var(--white);
+                margin-bottom: 1rem;
+            }
 
-    .ic-strip p { color: rgba(255,255,255,0.68); max-width: 640px; margin: 0 auto 2rem; }
+            .ic-strip p {
+                color: rgba(255, 255, 255, 0.68);
+                max-width: 640px;
+                margin: 0 auto 2rem;
+            }
 
-    .ic-strip-logo {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.75rem;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 12px;
-      padding: 0.9rem 1.75rem;
-      font-weight: 600;
-      font-size: 1rem;
-      color: var(--ic-blue);
-    }
+            .ic-strip-logo {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.75rem;
+                background: rgba(255, 255, 255, 0.06);
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                border-radius: 12px;
+                padding: 0.9rem 1.75rem;
+                font-weight: 600;
+                font-size: 1rem;
+                color: var(--ic-blue);
+            }
 
-    .ic-infinity {
-      font-size: 1.8rem;
-      line-height: 1;
-      background: linear-gradient(135deg, var(--ic-purple), var(--ic-blue));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
+            .ic-infinity {
+                font-size: 1.8rem;
+                line-height: 1;
+                background: linear-gradient(
+                    135deg,
+                    var(--ic-purple),
+                    var(--ic-blue)
+                );
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
 
-    /* ── CONTACT ── */
-    #contact { background: var(--white); }
+            /* ── CONTACT ── */
+            #contact {
+                background: var(--white);
+            }
 
-    .contact-inner {
-      max-width: 540px;
-      margin: 0 auto;
-      text-align: center;
-    }
+            .contact-inner {
+                max-width: 540px;
+                margin: 0 auto;
+                text-align: center;
+            }
 
-    .contact-inner .lead { margin-left: auto; margin-right: auto; }
+            .contact-inner .lead {
+                margin-left: auto;
+                margin-right: auto;
+            }
 
-    .contact-email {
-      display: inline-block;
-      margin-top: 0.5rem;
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--ic-purple);
-      text-decoration: none;
-      border-bottom: 2px solid transparent;
-      transition: border-color 0.2s;
-    }
+            .contact-email {
+                display: inline-block;
+                margin-top: 0.5rem;
+                font-size: 1.2rem;
+                font-weight: 700;
+                color: var(--ic-purple);
+                text-decoration: none;
+                border-bottom: 2px solid transparent;
+                transition: border-color 0.2s;
+            }
 
-    .contact-email:hover { border-color: var(--ic-purple); }
+            .contact-email:hover {
+                border-color: var(--ic-purple);
+            }
 
-    /* ── FOOTER ── */
-    footer {
-      background: var(--ic-dark);
-      color: rgba(255,255,255,0.45);
-      text-align: center;
-      padding: 2rem;
-      font-size: 0.85rem;
-    }
+            /* ── FOOTER ── */
+            footer {
+                background: var(--ic-dark);
+                color: rgba(255, 255, 255, 0.45);
+                text-align: center;
+                padding: 2rem;
+                font-size: 0.85rem;
+            }
 
-    footer strong { color: rgba(255,255,255,0.7); }
+            footer strong {
+                color: rgba(255, 255, 255, 0.7);
+            }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 768px) {
-      .about-grid { grid-template-columns: 1fr; }
-      nav ul { gap: 1rem; }
-    }
+            /* ── RESPONSIVE ── */
+            @media (max-width: 768px) {
+                .about-grid {
+                    grid-template-columns: 1fr;
+                }
+                nav ul {
+                    gap: 1rem;
+                }
+            }
 
-    @media (max-width: 480px) {
-      nav ul { display: none; }
-    }
-  </style>
-</head>
-<body>
+            @media (max-width: 480px) {
+                nav ul {
+                    display: none;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- NAV -->
+        <nav>
+            <div class="nav-logo">Computism<span>.</span></div>
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#team">Team</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
 
-  <!-- NAV -->
-  <nav>
-    <div class="nav-logo">Computism<span>.</span></div>
-    <ul>
-      <li><a href="#about">About</a></li>
-      <li><a href="#services">Services</a></li>
-      <li><a href="#team">Team</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
+        <!-- HERO -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-badge">
+                    Internet Computer Specialists · Since 2020
+                </div>
+                <h1>
+                    Building the <span>Decentralised</span><br />Web of Tomorrow
+                </h1>
+                <p>
+                    Computism is a UK software company with deep expertise in
+                    the Internet Computer blockchain platform. We design and
+                    deliver robust, scalable decentralised applications for
+                    forward-thinking organisations.
+                </p>
+                <a href="#contact" class="hero-cta">Get in Touch</a>
+            </div>
+        </section>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="container">
-      <div class="hero-badge">Internet Computer Specialists · Since 2020</div>
-      <h1>Building the <span>Decentralised</span><br>Web of Tomorrow</h1>
-      <p>Computism is a UK software company with deep expertise in the Internet Computer blockchain platform. We design and deliver robust, scalable decentralised applications for forward-thinking organisations.</p>
-      <a href="#contact" class="hero-cta">Get in Touch</a>
-    </div>
-  </section>
+        <!-- ABOUT -->
+        <section id="about">
+            <div class="container">
+                <div class="about-grid">
+                    <div class="about-text">
+                        <span class="section-label">About Us</span>
+                        <h2>Experienced Engineers. Cutting-Edge Platform.</h2>
+                        <p>
+                            Founded in the United Kingdom, Computism brings
+                            together senior software engineers with decades of
+                            combined experience across web technologies,
+                            distributed systems, and product engineering.
+                        </p>
+                        <p>
+                            Since 2020 we have focused exclusively on the
+                            <strong>DFINITY Internet Computer</strong> — the
+                            world's first blockchain that runs at web speed and
+                            can host full-stack decentralised applications. We
+                            help clients harness this platform to build products
+                            that are secure, unstoppable, and future-proof.
+                        </p>
+                        <p>
+                            We are a small, senior team. Every engagement is led
+                            by a director-level engineer, ensuring quality and
+                            expertise at every stage.
+                        </p>
+                    </div>
+                    <div class="about-stats">
+                        <div class="stat-card">
+                            <div class="number">25+</div>
+                            <div class="label">
+                                Years of combined engineering experience per
+                                director
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="number">5+</div>
+                            <div class="label">
+                                Years on the Internet Computer platform
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="number">🇬🇧</div>
+                            <div class="label">UK registered company</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="number">ICP</div>
+                            <div class="label">
+                                Internet Computer Protocol specialists
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="container">
-      <div class="about-grid">
-        <div class="about-text">
-          <span class="section-label">About Us</span>
-          <h2>Experienced Engineers. Cutting-Edge Platform.</h2>
-          <p>Founded in the United Kingdom, Computism brings together senior software engineers with decades of combined experience across web technologies, distributed systems, and product engineering.</p>
-          <p>Since 2020 we have focused exclusively on the <strong>DFINITY Internet Computer</strong> — the world's first blockchain that runs at web speed and can host full-stack decentralised applications. We help clients harness this platform to build products that are secure, unstoppable, and future-proof.</p>
-          <p>We are a small, senior team. Every engagement is led by a director-level engineer, ensuring quality and expertise at every stage.</p>
+        <!-- SERVICES -->
+        <section id="services">
+            <div class="container">
+                <span class="section-label">What We Do</span>
+                <h2>Services</h2>
+                <p class="lead">
+                    From architecture and smart-contract development to
+                    front-end product engineering, we cover the full stack on
+                    the Internet Computer.
+                </p>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon">⛓</div>
+                        <h3>Canister Development</h3>
+                        <p>
+                            We build and deploy Internet Computer canisters
+                            (smart contracts) in Rust and Motoko, engineered for
+                            reliability, security, and upgrade-safety.
+                        </p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">🖥</div>
+                        <h3>Full-Stack dApps</h3>
+                        <p>
+                            End-to-end decentralised application development —
+                            from on-chain backend logic to polished, performant
+                            front-end interfaces hosted entirely on the IC.
+                        </p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">🏗</div>
+                        <h3>Architecture & Consulting</h3>
+                        <p>
+                            Helping teams evaluate the Internet Computer for
+                            their use case, design system architecture, and
+                            migrate or integrate existing products.
+                        </p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">🔒</div>
+                        <h3>Security & Auditing</h3>
+                        <p>
+                            Code review and security auditing of Internet
+                            Computer projects, drawing on years of hands-on
+                            experience with the platform's security model.
+                        </p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">📱</div>
+                        <h3>Mobile & Cross-Platform</h3>
+                        <p>
+                            Building iOS and cross-platform applications that
+                            integrate with Internet Computer back-ends,
+                            delivering seamless on-chain experiences to mobile
+                            users.
+                        </p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">🚀</div>
+                        <h3>Ongoing Product Delivery</h3>
+                        <p>
+                            Long-term engineering partnerships for teams that
+                            need sustained, senior-level delivery — roadmapping,
+                            development, and operational support.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- IC STRIP -->
+        <div class="ic-strip">
+            <div class="container">
+                <h2>Built on the Internet Computer</h2>
+                <p>
+                    The DFINITY Internet Computer is a decentralised cloud that
+                    enables software to run directly on a public blockchain at
+                    web speed and web scale. We have been building production
+                    systems on this platform since its genesis.
+                </p>
+                <div class="ic-strip-logo">
+                    <span class="ic-infinity">∞</span>
+                    Powered by Internet Computer Protocol
+                </div>
+            </div>
         </div>
-        <div class="about-stats">
-          <div class="stat-card"><div class="number">25+</div><div class="label">Years of combined engineering experience per director</div></div>
-          <div class="stat-card"><div class="number">5+</div><div class="label">Years on the Internet Computer platform</div></div>
-          <div class="stat-card"><div class="number">🇬🇧</div><div class="label">UK registered company</div></div>
-          <div class="stat-card"><div class="number">ICP</div><div class="label">Internet Computer Protocol specialists</div></div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- SERVICES -->
-  <section id="services">
-    <div class="container">
-      <span class="section-label">What We Do</span>
-      <h2>Services</h2>
-      <p class="lead">From architecture and smart-contract development to front-end product engineering, we cover the full stack on the Internet Computer.</p>
-      <div class="services-grid">
-        <div class="service-card">
-          <div class="service-icon">⛓</div>
-          <h3>Canister Development</h3>
-          <p>We build and deploy Internet Computer canisters (smart contracts) in Rust and Motoko, engineered for reliability, security, and upgrade-safety.</p>
-        </div>
-        <div class="service-card">
-          <div class="service-icon">🖥</div>
-          <h3>Full-Stack dApps</h3>
-          <p>End-to-end decentralised application development — from on-chain backend logic to polished, performant front-end interfaces hosted entirely on the IC.</p>
-        </div>
-        <div class="service-card">
-          <div class="service-icon">🏗</div>
-          <h3>Architecture & Consulting</h3>
-          <p>Helping teams evaluate the Internet Computer for their use case, design system architecture, and migrate or integrate existing products.</p>
-        </div>
-        <div class="service-card">
-          <div class="service-icon">🔒</div>
-          <h3>Security & Auditing</h3>
-          <p>Code review and security auditing of Internet Computer projects, drawing on years of hands-on experience with the platform's security model.</p>
-        </div>
-        <div class="service-card">
-          <div class="service-icon">📱</div>
-          <h3>Mobile & Cross-Platform</h3>
-          <p>Building iOS and cross-platform applications that integrate with Internet Computer back-ends, delivering seamless on-chain experiences to mobile users.</p>
-        </div>
-        <div class="service-card">
-          <div class="service-icon">🚀</div>
-          <h3>Ongoing Product Delivery</h3>
-          <p>Long-term engineering partnerships for teams that need sustained, senior-level delivery — roadmapping, development, and operational support.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+        <!-- TEAM -->
+        <section id="team">
+            <div class="container">
+                <span class="section-label">Our Team</span>
+                <h2>The Directors</h2>
+                <p class="lead">
+                    A small, senior team — every member brings decades of
+                    real-world engineering experience alongside deep knowledge
+                    of the Internet Computer ecosystem.
+                </p>
+                <div class="team-grid">
+                    <div class="team-card">
+                        <img src="matt.jpeg" alt="Matt Grogan" />
+                        <div class="team-info">
+                            <h3>Matt Grogan</h3>
+                            <div class="team-role">
+                                Director &amp; Senior Engineer
+                            </div>
+                            <p>
+                                Matthew is a Software Engineer with 25 years of
+                                experience across a wide range of domains,
+                                generally involving web technologies. Recently
+                                he focused on building microservice backends
+                                supporting a multi-tenant platform for running
+                                online travel agencies. Matt values reliable and
+                                maintainable software. He holds a Masters degree
+                                in Engineering and Computer Science from the
+                                University of Oxford.
+                            </p>
+                        </div>
+                    </div>
 
-  <!-- IC STRIP -->
-  <div class="ic-strip">
-    <div class="container">
-      <h2>Built on the Internet Computer</h2>
-      <p>The DFINITY Internet Computer is a decentralised cloud that enables software to run directly on a public blockchain at web speed and web scale. We have been building production systems on this platform since its genesis.</p>
-      <div class="ic-strip-logo">
-        <span class="ic-infinity">∞</span>
-        Powered by Internet Computer Protocol
-      </div>
-    </div>
-  </div>
+                    <div class="team-card">
+                        <img src="hamish.jpeg" alt="Hamish Peebles" />
+                        <div class="team-info">
+                            <h3>Hamish Peebles</h3>
+                            <div class="team-role">
+                                Director &amp; Senior Engineer
+                            </div>
+                            <p>
+                                After graduating with a degree in Mathematics
+                                from Cambridge University, Hamish transitioned
+                                into software engineering, focusing on
+                                high-throughput, low-latency cloud-based
+                                systems. Before building OpenChat, he worked at
+                                Emirates where he quickly rose through the
+                                ranks, eventually leading the design of their
+                                new B2B hotel search engine.
+                            </p>
+                        </div>
+                    </div>
 
-  <!-- TEAM -->
-  <section id="team">
-    <div class="container">
-      <span class="section-label">Our Team</span>
-      <h2>The Directors</h2>
-      <p class="lead">A small, senior team — every member brings decades of real-world engineering experience alongside deep knowledge of the Internet Computer ecosystem.</p>
-      <div class="team-grid">
+                    <div class="team-card">
+                        <img src="julian.jpg" alt="Julian Jelfs" />
+                        <div class="team-info">
+                            <h3>Julian Jelfs</h3>
+                            <div class="team-role">
+                                Director &amp; Senior Engineer
+                            </div>
+                            <p>
+                                Julian has been dabbling in software engineering
+                                for the last 25 years or so. He has a varied
+                                industry background — from defence to risk
+                                management, e-commerce to education technology,
+                                and travel to chat. He has developed a penchant
+                                for functional front ends. He holds a Masters
+                                degree in Politics, Philosophy &amp; Economics
+                                from the University of Oxford.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        <div class="team-card">
-          <img src="matt.jpeg" alt="Matt Grogan" />
-          <div class="team-info">
-            <h3>Matt Grogan</h3>
-            <div class="team-role">Director &amp; Senior Engineer</div>
-            <p>Matthew is a Software Engineer with 25 years of experience across a wide range of domains, generally involving web technologies. Recently he focused on building microservice backends supporting a multi-tenant platform for running online travel agencies. Matt values reliable and maintainable software. He holds a Masters degree in Engineering and Computer Science from the University of Oxford.</p>
-          </div>
-        </div>
+        <!-- CONTACT -->
+        <section id="contact">
+            <div class="container">
+                <div class="contact-inner">
+                    <span class="section-label">Contact</span>
+                    <h2>Work With Us</h2>
+                    <p class="lead">
+                        Whether you're exploring the Internet Computer for the
+                        first time or need senior engineers to help ship your
+                        next product, we'd love to hear from you.
+                    </p>
+                    <a class="contact-email" href="mailto:hello@computism.com"
+                        >hello@computism.com</a
+                    >
+                </div>
+            </div>
+        </section>
 
-        <div class="team-card">
-          <img src="hamish.jpeg" alt="Hamish Peebles" />
-          <div class="team-info">
-            <h3>Hamish Peebles</h3>
-            <div class="team-role">Director &amp; Senior Engineer</div>
-            <p>After graduating with a degree in Mathematics from Cambridge University, Hamish transitioned into software engineering, focusing on high-throughput, low-latency cloud-based systems. Before building OpenChat, he worked at Emirates where he quickly rose through the ranks, eventually leading the design of their new B2B hotel search engine.</p>
-          </div>
-        </div>
-
-        <div class="team-card">
-          <img src="julian.jpg" alt="Julian Jelfs" />
-          <div class="team-info">
-            <h3>Julian Jelfs</h3>
-            <div class="team-role">Director &amp; Senior Engineer</div>
-            <p>Julian has been dabbling in software engineering for the last 25 years or so. He has a varied industry background — from defence to risk management, e-commerce to education technology, and travel to chat. He has developed a penchant for functional front ends. He holds a Masters degree in Politics, Philosophy &amp; Economics from the University of Oxford.</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contact">
-    <div class="container">
-      <div class="contact-inner">
-        <span class="section-label">Contact</span>
-        <h2>Work With Us</h2>
-        <p class="lead">Whether you're exploring the Internet Computer for the first time or need senior engineers to help ship your next product, we'd love to hear from you.</p>
-        <a class="contact-email" href="mailto:hello@computism.com">hello@computism.com</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <p><strong>Computism Ltd</strong> · Registered in England &amp; Wales · Company No. <a href="https://find-and-update.company-information.service.gov.uk/company/12979449" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.55);text-decoration:underline;">12979449</a> · © 2025 Computism Ltd. All rights reserved.</p>
-  </footer>
-
-</body>
+        <!-- FOOTER -->
+        <footer>
+            <p>
+                <strong>Computism Ltd</strong> · Registered in England &amp;
+                Wales · Company No.
+                <a
+                    href="https://find-and-update.company-information.service.gov.uk/company/12979449"
+                    target="_blank"
+                    rel="noopener"
+                    style="
+                        color: rgba(255, 255, 255, 0.55);
+                        text-decoration: underline;
+                    "
+                    >12979449</a
+                >
+                · © 2025 Computism Ltd. All rights reserved.
+            </p>
+        </footer>
+    </body>
 </html>
